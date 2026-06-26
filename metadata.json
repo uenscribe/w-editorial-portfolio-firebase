@@ -1,0 +1,6 @@
+{
+  "name": "W Editorial Portfolio Archive",
+  "description": "An editorial archive-style personal portfolio with a interactive canvas background, top-anchored music playlist, responsive timeline, library archives, and backend management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
