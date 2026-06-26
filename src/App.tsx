@@ -792,7 +792,118 @@ export default function App() {
 
   // Backups / Database serialization exports & imports
   const handleExportSystemSchema = () => {
-    const backupData: Record<string, string> = {};
+    // 1. Pre-populate backupData with the actual current state variables to ensure 100% completeness
+    const backupData: Record<string, string> = {
+      // List Structures
+      archive_projects: JSON.stringify(projectsList),
+      archive_notes: JSON.stringify(notesList),
+      archive_library: JSON.stringify(libraryList),
+      archive_timeline: JSON.stringify(timelineList),
+      playlist_tracks: JSON.stringify(customTracks),
+      custom_nav_items: JSON.stringify(customNavItems),
+
+      // About Copy & Biography
+      about_title_en: profileTitleEn,
+      about_title_zh: profileTitleZh,
+      about_sub_en: profileSubEn,
+      about_sub_zh: profileSubZh,
+      about_bio_en: profileBioEn,
+      about_bio_zh: profileBioZh,
+      about_second_en: profileSecondEn,
+      about_second_zh: profileSecondZh,
+      about_contact_title_en: aboutContactTitleEn,
+      about_contact_title_zh: aboutContactTitleZh,
+      about_skills_title_en: aboutSkillsTitleEn,
+      about_skills_title_zh: aboutSkillsTitleZh,
+      about_skills_list_en: aboutSkillsListEn,
+      about_skills_list_zh: aboutSkillsListZh,
+
+      // Contact Channels
+      contact_channel_email: contactChannelEmail,
+      contact_channel_linkedin: contactChannelLinkedin,
+      contact_channel_phone: contactChannelPhone,
+      contact_label_en: contactLabelEn,
+      contact_label_zh: contactLabelZh,
+      contact_title_en: contactTitleEn,
+      contact_title_zh: contactTitleZh,
+      contact_hq_en: contactHqEn,
+      contact_hq_zh: contactHqZh,
+      contact_desc_en: contactDescEn,
+      contact_desc_zh: contactDescZh,
+
+      // Brand / Homepage Slogans
+      brand_hero_sub_en: brandHeroSubEn,
+      brand_hero_sub_zh: brandHeroSubZh,
+      brand_intro_en: brandIntroEn,
+      brand_intro_zh: brandIntroZh,
+      brand_title1_en: brandTitle1En,
+      brand_title1_zh: brandTitle1Zh,
+      brand_title2_en: brandTitle2En,
+      brand_title2_zh: brandTitle2Zh,
+      brand_title3_en: brandTitle3En,
+      brand_title3_zh: brandTitle3Zh,
+      brand_name: brandNameInput,
+
+      // Quote Ribbons & Curated Titles
+      ribbon_1_en: ribbon1En,
+      ribbon_1_zh: ribbon1Zh,
+      ribbon_2_en: ribbon2En,
+      ribbon_2_zh: ribbon2Zh,
+      ribbon_3_en: ribbon3En,
+      ribbon_3_zh: ribbon3Zh,
+      curated_archives_title_en: curatedArchivesTitleEn,
+      curated_archives_title_zh: curatedArchivesTitleZh,
+
+      // Showcases
+      showcase_1_badge_en: showcase1BadgeEn,
+      showcase_1_badge_zh: showcase1BadgeZh,
+      showcase_1_subtitle_en: showcase1SubtitleEn,
+      showcase_1_subtitle_zh: showcase1SubtitleZh,
+      showcase_1_title_en: showcase1TitleEn,
+      showcase_1_title_zh: showcase1TitleZh,
+      showcase_1_redirect: showcase1Redirect,
+      showcase_2_badge_en: showcase2BadgeEn,
+      showcase_2_badge_zh: showcase2BadgeZh,
+      showcase_2_title_en: showcase2TitleEn,
+      showcase_2_title_zh: showcase2TitleZh,
+      showcase_2_desc_en: showcase2DescEn,
+      showcase_2_desc_zh: showcase2DescZh,
+      showcase_2_redirect: showcase2Redirect,
+
+      // Timeline Title & Intro
+      timeline_title_en: timelineTitleEn,
+      timeline_title_zh: timelineTitleZh,
+      timeline_intro_en: timelineIntroEn,
+      timeline_intro_zh: timelineIntroZh,
+
+      // Visuals, Images & Avatars
+      logo_avatar_b64: avatarB64,
+      logo_avatar_hover_left: avatarHoverLeft,
+      logo_avatar_hover_right: avatarHoverRight,
+      home_module1_bg_b64: homeModule1Bg,
+      home_module2_bg_b64: homeModule2Bg,
+      global_page_bg_b64: globalPageBg,
+
+      // Custom Cursor
+      custom_cursor_image: customCursorImage || '',
+      custom_cursor_size: String(customCursorSize),
+      custom_cursor_enabled: String(customCursorEnabled),
+
+      // Notes Layout & Copy elements
+      note_top_subtitle_en: noteTopSubtitleEn,
+      note_top_subtitle_zh: noteTopSubtitleZh,
+      note_top_title_en: noteTopTitleEn,
+      note_top_title_zh: noteTopTitleZh,
+      note_btn_read_en: noteBtnReadEn,
+      note_btn_read_zh: noteBtnReadZh,
+      note_title_insights_en: noteTitleInsightsEn,
+      note_title_insights_zh: noteTitleInsightsZh,
+      note_btn_launch_en: noteBtnLaunchEn,
+      note_btn_launch_zh: noteBtnLaunchZh,
+      note_btn_publish_en: noteBtnPublishEn,
+      note_btn_publish_zh: noteBtnPublishZh
+    };
+
     const whitelist = [
       'archive_projects', 'archive_notes', 'archive_library', 'archive_timeline',
       'playlist_tracks', 'custom_nav_items', 'about_title_en', 'about_title_zh',
@@ -821,6 +932,7 @@ export default function App() {
       'contact_desc_en', 'contact_desc_zh'
     ];
 
+    // 2. Scan localStorage for any other keys matching whitelist or prefixes (e.g. customized list indices)
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key) {
